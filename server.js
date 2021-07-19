@@ -26,44 +26,10 @@ app.use(express.static('public'));
 const { animals } = require('./data/animals');
 const { notes } = require('./data/notes');
 
-function validateNote(note) {
-  if (!note.title || typeof note.title !== 'string') {
-    console.log('bad title format');
-    return false;
-  }
-  if (!note.text || typeof note.text !== 'string') {
-    console.log('bad text format');
-    return false;
-  }
-  return true;
-}
-
-// add a note to json file and notes array in this function
-function createNewNote(body, notesArray) {
-  const note = body;
-  notesArray.push(note);
-  fs.writeFileSync(
-    path.join(__dirname, './data/notes.json'),
-    JSON.stringify({ notes: notesArray }, null, 2)
-  );
-  return note;
-}
-
 app.get('/api/notes', (req, res) => {
   console.log(notes);
   let results = notes;
   res.json(results);
-});
-
-app.post('/api/notes', (req, res) => {
-  // this only works if no data is removed, otherwise id's will be thrown off
-  req.body.id = notes.length.toString();
-  if (!validateNote(req.body)) {
-    res.status(400).send('The note is not properly formatted');
-  } else {
-    const animal = createNewNote(req.body, notes);
-    res.json(req.body);
-  }
 });
 
 app.get('/', (req, res) => {
