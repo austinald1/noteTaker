@@ -23,7 +23,7 @@ app.use(express.json());
 // helps create virtual path between location of the file based on the directory given and the route itself
 app.use(express.static('public'));
 
-const { notes } = require('./db/db');
+const { notes } = require('./data/notes');
 
 app.get('/api/notes', (req, res) => {
   let results = notes;
